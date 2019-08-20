@@ -1,20 +1,22 @@
 
 
 
-for n in $(seq 6000 1 6200)
+for n in $(seq 6000 1 6200) #The range of searching qualified files; $(seq [begin run number] 1 [end run number])
 do
    found_files="samweb list-files 'data_tier full-reconstructed and run_number ${n} and run_type protodune-sp and data_stream physics and application reco'|sort"
+   #Within '', qualification requirements can be changed. Please check what kind of files you need with "samweb get-metadata".
    declare -i number_scan_files=$(eval ${found_files}|wc -l)
    scan_root_files=$(eval ${found_files})
    indiv_scan_root_files=($scan_root_files)
    echo ${number_scan_files}" Files found in Run ${n}:"
-   if [ $number_scan_files -gt 9 ]
+   if [ $number_scan_files -gt 9 ] #Change the number to change the minimum number of files from each run; it is 10 here, so we want number of files to be greater than 9. 
    then
 
    eval ${found_files}
 
    ########## Time to run through each indiv. raw data file ##########
    for n in $(seq 0 1 9)
+   #change the last number if minimum number of files from each run is different
    #for n in 0 # if you would like to check the first file of run only
    do
 #    echo "--------------------------------------------------"
